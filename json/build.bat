@@ -55,13 +55,6 @@ msbuild.exe -version
 GOTO :EOF
 
 REM ===============================
-REM === Prepare
-REM ===============================
-:PREPARE
-nuget install System.Text.Json -o packages
-GOTO :EOF
-
-REM ===============================
 REM === Restore
 REM ===============================
 :RESTORE
