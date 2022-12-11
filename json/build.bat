@@ -88,7 +88,7 @@ REM ===============================
 REM === Test
 REM ===============================
 :TEST
-Bin\Debug\example.exe array.json object.json
+Bin\Debug\example.exe -o output.txt array.json object.json
 GOTO :EOF
 
 REM ===============================

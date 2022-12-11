@@ -1,6 +1,7 @@
 using System;
 
 using System.IO;
+using System.Text;
 
 using Gnu.Getopt;
 
@@ -13,6 +14,8 @@ namespace MyNameSpace
     {
         static void Main(String[] args)
         {
+            int ret = 0;
+
             int c;
             int index;
             String output = "";
@@ -41,10 +44,25 @@ namespace MyNameSpace
                 }
             }
 
+            if(output == ""){
+              Console.WriteLine("ERROR : no output option");
+              ret++;
+            }
+
+            if(ret != 0){
+                Environment.Exit(ret);
+            }
+
             Console.WriteLine("Hello, world!");
 
+            // open StreamWriter without BOM
+            Encoding enc = new UTF8Encoding(false);
+            StreamWriter writer = new StreamWriter(output, false, enc);
+
+            writer.WriteLine("日本語");
+
             for(index = g.Optind; index < args.Length; index++){
-                Console.WriteLine("read {0}", args[index]);
+                Console.WriteLine("INFO : read {0}", args[index]);
                 StreamReader reader = new StreamReader(args[index]);
 
                 string lines = reader.ReadToEnd();
@@ -52,10 +70,12 @@ namespace MyNameSpace
 
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 JsonNode data = JsonNode.Parse(lines);
-                Console.WriteLine(data.ToJsonString(options));
+                writer.WriteLine(data.ToJsonString(options));
 
                 reader.Close();
             }
+
+            writer.Close();
         }
     }
 }
